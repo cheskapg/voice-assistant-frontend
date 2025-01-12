@@ -22,7 +22,7 @@ export default function Page() {
     ConnectionDetails | undefined
   >(undefined);
   const [agentState, setAgentState] = useState<AgentState>("disconnected");
-
+const connectionUrl=  process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT
   const onConnectButtonClicked = useCallback(async () => {
     // Generate room connection details, including:
     //   - A random Room name
@@ -34,11 +34,10 @@ export default function Page() {
     // own participant name, and possibly to choose from existing rooms to join.
 
     const url = new URL(
-      process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT ??
-      "/api/connection-details",
+      connectionUrl +"/api/connection-details",
       window.location.origin
     );
-    const response = await fetch(url.toString());
+    const response = await fetch(url?.toString());
     const connectionDetailsData = await response.json();
     updateConnectionDetails(connectionDetailsData);
   }, []);
